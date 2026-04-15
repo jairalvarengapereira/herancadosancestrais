@@ -15,9 +15,20 @@ app.use(express.json());
 const router = express.Router();
 
 router.get('/sobre', async (req, res) => {
-  const { data, error } = await supabase.from('sobre').select('*').single();
-  if (error) return res.status(500).json(error);
-  res.json(data);
+  try {
+    const { data, error } = await supabase.from('sobre').select('*').single();
+    if (error) {
+      console.error('Supabase error:', error);
+      return res.status(500).json({ error: error.message });
+    }
+    if (!data) {
+      return res.status(404).json({ error: 'Tabela vazia' });
+    }
+    res.json(data);
+  } catch (err) {
+    console.error('Catch error:', err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 router.get('/musicos', async (req, res) => {
