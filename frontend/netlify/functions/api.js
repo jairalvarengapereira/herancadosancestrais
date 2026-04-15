@@ -1,10 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const serverless = require('serverless-http');
-const { createClient } = require('@supabase/supabase-js');
+const { Pool } = require('pg');
 
 const app = express();
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+
+const pool = new Pool({
+  connectionString: process.env.SUPABASE_URL
+});
 
 app.use(cors());
 app.use(express.json());
@@ -13,9 +16,8 @@ const router = express.Router();
 
 router.get('/sobre', async (req, res) => {
   try {
-    const { data, error } = await supabase.from('sobre').select('*').single();
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    const result = await pool.query('SELECT * FROM sobre WHERE id = 1');
+    res.json(result.rows[0] || null);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -23,9 +25,12 @@ router.get('/sobre', async (req, res) => {
 
 router.put('/sobre', async (req, res) => {
   try {
-    const { data, error } = await supabase.from('sobre').update(req.body).eq('id', 1).select().single();
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    const { titulo, texto1, texto2, texto3, anos, shows, musicos, foto } = req.body;
+    const result = await pool.query(
+      'UPDATE sobre SET titulo=$1, texto1=$2, texto2=$3, texto3=$4, anos=$5, shows=$6, musicos=$7, foto=$8 WHERE id=1 RETURNING *',
+      [titulo, texto1, texto2, texto3, anos, shows, musicos, foto]
+    );
+    res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -33,9 +38,8 @@ router.put('/sobre', async (req, res) => {
 
 router.get('/musicos', async (req, res) => {
   try {
-    const { data, error } = await supabase.from('musicos').select('*');
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    const result = await pool.query('SELECT * FROM musicos ORDER BY created_at');
+    res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -43,9 +47,12 @@ router.get('/musicos', async (req, res) => {
 
 router.post('/musicos', async (req, res) => {
   try {
-    const { data, error } = await supabase.from('musicos').insert([req.body]).select().single();
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    const { nome, instrumento, bio, foto } = req.body;
+    const result = await pool.query(
+      'INSERT INTO musicos (nome, instrumento, bio, foto) VALUES ($1, $2, $3, $4) RETURNING *',
+      [nome, instrumento, bio, foto]
+    );
+    res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -53,9 +60,12 @@ router.post('/musicos', async (req, res) => {
 
 router.put('/musicos/:id', async (req, res) => {
   try {
-    const { data, error } = await supabase.from('musicos').update(req.body).eq('id', req.params.id).select().single();
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    const { nome, instrumento, bio, foto } = req.body;
+    const result = await pool.query(
+      'UPDATE musicos SET nome=$1, instrumento=$2, bio=$3, foto=$4 WHERE id=$5 RETURNING *',
+      [nome, instrumento, bio, foto, req.params.id]
+    );
+    res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -63,8 +73,7 @@ router.put('/musicos/:id', async (req, res) => {
 
 router.delete('/musicos/:id', async (req, res) => {
   try {
-    const { error } = await supabase.from('musicos').delete().eq('id', req.params.id);
-    if (error) return res.status(500).json({ error: error.message });
+    await pool.query('DELETE FROM musicos WHERE id = $1', [req.params.id]);
     res.json({ ok: true });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -73,9 +82,8 @@ router.delete('/musicos/:id', async (req, res) => {
 
 router.get('/fotos', async (req, res) => {
   try {
-    const { data, error } = await supabase.from('fotos').select('*');
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    const result = await pool.query('SELECT * FROM fotos ORDER BY created_at');
+    res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -83,9 +91,12 @@ router.get('/fotos', async (req, res) => {
 
 router.post('/fotos', async (req, res) => {
   try {
-    const { data, error } = await supabase.from('fotos').insert([req.body]).select().single();
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    const { url, legenda } = req.body;
+    const result = await pool.query(
+      'INSERT INTO fotos (url, legenda) VALUES ($1, $2) RETURNING *',
+      [url, legenda]
+    );
+    res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -93,8 +104,7 @@ router.post('/fotos', async (req, res) => {
 
 router.delete('/fotos/:id', async (req, res) => {
   try {
-    const { error } = await supabase.from('fotos').delete().eq('id', req.params.id);
-    if (error) return res.status(500).json({ error: error.message });
+    await pool.query('DELETE FROM fotos WHERE id = $1', [req.params.id]);
     res.json({ ok: true });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -103,9 +113,8 @@ router.delete('/fotos/:id', async (req, res) => {
 
 router.get('/videos', async (req, res) => {
   try {
-    const { data, error } = await supabase.from('videos').select('*');
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    const result = await pool.query('SELECT * FROM videos ORDER BY created_at');
+    res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -113,9 +122,12 @@ router.get('/videos', async (req, res) => {
 
 router.post('/videos', async (req, res) => {
   try {
-    const { data, error } = await supabase.from('videos').insert([req.body]).select().single();
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    const { titulo, url } = req.body;
+    const result = await pool.query(
+      'INSERT INTO videos (titulo, url) VALUES ($1, $2) RETURNING *',
+      [titulo, url]
+    );
+    res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -123,9 +135,12 @@ router.post('/videos', async (req, res) => {
 
 router.put('/videos/:id', async (req, res) => {
   try {
-    const { data, error } = await supabase.from('videos').update(req.body).eq('id', req.params.id).select().single();
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    const { titulo, url } = req.body;
+    const result = await pool.query(
+      'UPDATE videos SET titulo=$1, url=$2 WHERE id=$3 RETURNING *',
+      [titulo, url, req.params.id]
+    );
+    res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -133,8 +148,7 @@ router.put('/videos/:id', async (req, res) => {
 
 router.delete('/videos/:id', async (req, res) => {
   try {
-    const { error } = await supabase.from('videos').delete().eq('id', req.params.id);
-    if (error) return res.status(500).json({ error: error.message });
+    await pool.query('DELETE FROM videos WHERE id = $1', [req.params.id]);
     res.json({ ok: true });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -143,9 +157,8 @@ router.delete('/videos/:id', async (req, res) => {
 
 router.get('/agenda', async (req, res) => {
   try {
-    const { data, error } = await supabase.from('agenda').select('*');
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    const result = await pool.query('SELECT * FROM agenda ORDER BY created_at');
+    res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -153,9 +166,12 @@ router.get('/agenda', async (req, res) => {
 
 router.post('/agenda', async (req, res) => {
   try {
-    const { data, error } = await supabase.from('agenda').insert([req.body]).select().single();
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    const { dia, mes, nome, local, status } = req.body;
+    const result = await pool.query(
+      'INSERT INTO agenda (dia, mes, nome, local, status) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [dia, mes, nome, local, status]
+    );
+    res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -163,9 +179,12 @@ router.post('/agenda', async (req, res) => {
 
 router.put('/agenda/:id', async (req, res) => {
   try {
-    const { data, error } = await supabase.from('agenda').update(req.body).eq('id', req.params.id).select().single();
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    const { dia, mes, nome, local, status } = req.body;
+    const result = await pool.query(
+      'UPDATE agenda SET dia=$1, mes=$2, nome=$3, local=$4, status=$5 WHERE id=$6 RETURNING *',
+      [dia, mes, nome, local, status, req.params.id]
+    );
+    res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -173,8 +192,7 @@ router.put('/agenda/:id', async (req, res) => {
 
 router.delete('/agenda/:id', async (req, res) => {
   try {
-    const { error } = await supabase.from('agenda').delete().eq('id', req.params.id);
-    if (error) return res.status(500).json({ error: error.message });
+    await pool.query('DELETE FROM agenda WHERE id = $1', [req.params.id]);
     res.json({ ok: true });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -183,9 +201,8 @@ router.delete('/agenda/:id', async (req, res) => {
 
 router.get('/contatos', async (req, res) => {
   try {
-    const { data, error } = await supabase.from('contatos').select('*').single();
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    const result = await pool.query('SELECT * FROM contatos WHERE id = 1');
+    res.json(result.rows[0] || null);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -193,9 +210,12 @@ router.get('/contatos', async (req, res) => {
 
 router.put('/contatos', async (req, res) => {
   try {
-    const { data, error } = await supabase.from('contatos').update(req.body).eq('id', 1).select().single();
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    const { whatsapp, instagram, facebook, youtube } = req.body;
+    const result = await pool.query(
+      'UPDATE contatos SET whatsapp=$1, instagram=$2, facebook=$3, youtube=$4 WHERE id=1 RETURNING *',
+      [whatsapp, instagram, facebook, youtube]
+    );
+    res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
