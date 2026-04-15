@@ -6,41 +6,7 @@
 [functions]
   directory = "../netlify/functions"
 
-[[redirects]]
-  from = "/api/sobre"
-  to = "/.netlify/functions/api/sobre"
-  status = 200
-  force = true
 
-[[redirects]]
-  from = "/api/musicos"
-  to = "/.netlify/functions/api/musicos"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/fotos"
-  to = "/.netlify/functions/api/fotos"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/videos"
-  to = "/.netlify/functions/api/videos"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/agenda"
-  to = "/.netlify/functions/api/agenda"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/contatos"
-  to = "/.netlify/functions/api/contatos"
-  status = 200
-  force = true
 
 [[plugins]]
   package = "@netlify/plugin-functions-install-core"
