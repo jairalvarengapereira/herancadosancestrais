@@ -60,11 +60,16 @@ router.get('/contatos', async (req, res) => {
 
 router.put('/sobre', async (req, res) => {
   try {
+    console.log('PUT /sobre received:', req.body);
     const { data, error } = await supabase.from('sobre').update(req.body).eq('id', 1).select().single();
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase error:', error);
+      throw error;
+    }
     res.json(data);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('Catch error:', err);
+    res.status(500).json({ error: err.message, details: err.toString() });
   }
 });
 
