@@ -4,7 +4,13 @@ const serverless = require('serverless-http');
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+
+console.log('SUPABASE_URL:', process.env.SUPABASE_URL ? 'set' : 'NOT SET');
+console.log('SUPABASE_KEY:', process.env.SUPABASE_KEY ? 'set' : 'NOT SET');
+
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY, {
+  auth: { persistSession: false }
+});
 
 app.use(cors());
 app.use(express.json());
@@ -12,11 +18,17 @@ app.use(express.json());
 const router = express.Router();
 
 router.get('/sobre', async (req, res) => {
+  console.log('GET /sobre starting');
   try {
     const { data, error } = await supabase.from('sobre').select('*').single();
-    if (error) return res.status(500).json({ error: error.message });
+    if (error) {
+      console.error('Error:', error);
+      return res.status(500).json({ error: error.message });
+    }
+    console.log('Data returned:', data ? 'yes' : 'no');
     res.json(data);
   } catch (err) {
+    console.error('Catch:', err);
     res.status(500).json({ error: err.message });
   }
 });
