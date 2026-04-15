@@ -57,7 +57,7 @@ const router = express.Router();
 router.get('/sobre', (req, res) => res.json(db.sobre));
 router.put('/sobre', (req, res) => { 
   Object.assign(db.sobre, req.body); 
-  res.send('OK');
+  res.json({ ok: true, data: db.sobre });
 });
 router.get('/musicos', (req, res) => res.json(db.musicos));
 router.post('/musicos', (req, res) => { const m = {...req.body, id: Date.now().toString()}; db.musicos.push(m); res.json(m); });
