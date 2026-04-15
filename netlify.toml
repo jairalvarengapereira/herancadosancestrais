@@ -4,7 +4,8 @@
   publish = "dist"
 
 [functions]
-  directory = "../netlify/functions"
+  directory = "netlify/functions"
+  node_bundler = "npm"
 
 [[redirects]]
   from = "/api/*"
