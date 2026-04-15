@@ -1,226 +1,78 @@
 const express = require('express');
 const cors = require('cors');
 const serverless = require('serverless-http');
-const { Pool } = require('pg');
 
 const app = express();
-
-const pool = new Pool({
-  connectionString: process.env.SUPABASE_URL
-});
 
 app.use(cors());
 app.use(express.json());
 
+const db = {
+  sobre: {
+    id: 1,
+    titulo: "Raízes que não se perdem",
+    texto1: "O Grupo Herança dos Ancestrais nasceu do amor profundo pelo samba de raiz — aquele que carrega o cheiro da terra molhada, o batuque dos tambores e a voz que conta histórias de gerações.",
+    texto2: "Formado em Belo Horizonte/MG, o grupo reúne músicos apaixonados pela tradição do samba autêntico. Cada show é uma viagem às origens, um encontro vivo entre o passado que nos moldou e o presente que celebramos.",
+    texto3: "Do bar ao palco, da roda de choro ao festival, levamos o samba onde ele precisa estar: perto das pessoas, perto da alma.",
+    anos: "8+",
+    shows: "200+",
+    musicos: "6",
+    foto: null
+  },
+  musicos: [
+    {
+      id: "1d1c2392-5451-4e55-9894-62f9a9c5b12f",
+      nome: "Faride",
+      instrumento: "Voz e Pandeiro",
+      bio: "Percussionista com trajetória marcada pelo samba de raiz, tendo integrado diversos grupos e blocos carnavalescos. É fundador e linha de frente do Grupo Herança dos Ancestrais.",
+      foto: null
+    }
+  ],
+  fotos: [],
+  videos: [
+    {
+      id: "ae23eaf1-ffec-4abc-aa97-c0f203dbf33d",
+      titulo: "Samba 11/03/2026",
+      url: "https://www.youtube.com/watch?v=sbxsv_W__kE"
+    }
+  ],
+  agenda: [
+    { id: "1", dia: "19", mes: "Abr", nome: "Roda de Samba – Tiradentes", local: "Bar do Zeca · Belo Horizonte, MG", status: "confirmado" },
+    { id: "2", dia: "03", mes: "Mai", nome: "Festival Samba & Cultura", local: "Praça da Liberdade · Belo Horizonte, MG", status: "confirmado" },
+    { id: "3", dia: "24", mes: "Mai", nome: "Show Privado – Aniversário", local: "Local a confirmar · BH, MG", status: "pendente" },
+    { id: "4", dia: "14", mes: "Jun", nome: "Festa Junina das Ancestrais", local: "Clube Recreativo · BH, MG", status: "confirmado" },
+    { id: "5", dia: "12", mes: "Jul", nome: "Sarau Herança Viva", local: "Centro Cultural · Contagem, MG", status: "pendente" }
+  ],
+  contatos: {
+    id: 1,
+    whatsapp: "5531999999999",
+    instagram: "https://instagram.com/herancadosancestrais",
+    facebook: "https://facebook.com/herancadosancestrais",
+    youtube: "https://youtube.com/@herancadosancestrais"
+  }
+};
+
 const router = express.Router();
 
-router.get('/sobre', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM sobre WHERE id = 1');
-    res.json(result.rows[0] || null);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.put('/sobre', async (req, res) => {
-  try {
-    const { titulo, texto1, texto2, texto3, anos, shows, musicos, foto } = req.body;
-    const result = await pool.query(
-      'UPDATE sobre SET titulo=$1, texto1=$2, texto2=$3, texto3=$4, anos=$5, shows=$6, musicos=$7, foto=$8 WHERE id=1 RETURNING *',
-      [titulo, texto1, texto2, texto3, anos, shows, musicos, foto]
-    );
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.get('/musicos', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM musicos ORDER BY created_at');
-    res.json(result.rows);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.post('/musicos', async (req, res) => {
-  try {
-    const { nome, instrumento, bio, foto } = req.body;
-    const result = await pool.query(
-      'INSERT INTO musicos (nome, instrumento, bio, foto) VALUES ($1, $2, $3, $4) RETURNING *',
-      [nome, instrumento, bio, foto]
-    );
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.put('/musicos/:id', async (req, res) => {
-  try {
-    const { nome, instrumento, bio, foto } = req.body;
-    const result = await pool.query(
-      'UPDATE musicos SET nome=$1, instrumento=$2, bio=$3, foto=$4 WHERE id=$5 RETURNING *',
-      [nome, instrumento, bio, foto, req.params.id]
-    );
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.delete('/musicos/:id', async (req, res) => {
-  try {
-    await pool.query('DELETE FROM musicos WHERE id = $1', [req.params.id]);
-    res.json({ ok: true });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.get('/fotos', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM fotos ORDER BY created_at');
-    res.json(result.rows);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.post('/fotos', async (req, res) => {
-  try {
-    const { url, legenda } = req.body;
-    const result = await pool.query(
-      'INSERT INTO fotos (url, legenda) VALUES ($1, $2) RETURNING *',
-      [url, legenda]
-    );
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.delete('/fotos/:id', async (req, res) => {
-  try {
-    await pool.query('DELETE FROM fotos WHERE id = $1', [req.params.id]);
-    res.json({ ok: true });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.get('/videos', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM videos ORDER BY created_at');
-    res.json(result.rows);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.post('/videos', async (req, res) => {
-  try {
-    const { titulo, url } = req.body;
-    const result = await pool.query(
-      'INSERT INTO videos (titulo, url) VALUES ($1, $2) RETURNING *',
-      [titulo, url]
-    );
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.put('/videos/:id', async (req, res) => {
-  try {
-    const { titulo, url } = req.body;
-    const result = await pool.query(
-      'UPDATE videos SET titulo=$1, url=$2 WHERE id=$3 RETURNING *',
-      [titulo, url, req.params.id]
-    );
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.delete('/videos/:id', async (req, res) => {
-  try {
-    await pool.query('DELETE FROM videos WHERE id = $1', [req.params.id]);
-    res.json({ ok: true });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.get('/agenda', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM agenda ORDER BY created_at');
-    res.json(result.rows);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.post('/agenda', async (req, res) => {
-  try {
-    const { dia, mes, nome, local, status } = req.body;
-    const result = await pool.query(
-      'INSERT INTO agenda (dia, mes, nome, local, status) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [dia, mes, nome, local, status]
-    );
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.put('/agenda/:id', async (req, res) => {
-  try {
-    const { dia, mes, nome, local, status } = req.body;
-    const result = await pool.query(
-      'UPDATE agenda SET dia=$1, mes=$2, nome=$3, local=$4, status=$5 WHERE id=$6 RETURNING *',
-      [dia, mes, nome, local, status, req.params.id]
-    );
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.delete('/agenda/:id', async (req, res) => {
-  try {
-    await pool.query('DELETE FROM agenda WHERE id = $1', [req.params.id]);
-    res.json({ ok: true });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.get('/contatos', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM contatos WHERE id = 1');
-    res.json(result.rows[0] || null);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.put('/contatos', async (req, res) => {
-  try {
-    const { whatsapp, instagram, facebook, youtube } = req.body;
-    const result = await pool.query(
-      'UPDATE contatos SET whatsapp=$1, instagram=$2, facebook=$3, youtube=$4 WHERE id=1 RETURNING *',
-      [whatsapp, instagram, facebook, youtube]
-    );
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+router.get('/sobre', (req, res) => res.json(db.sobre));
+router.put('/sobre', (req, res) => { Object.assign(db.sobre, req.body); res.json(db.sobre); });
+router.get('/musicos', (req, res) => res.json(db.musicos));
+router.post('/musicos', (req, res) => { const m = {...req.body, id: Date.now().toString()}; db.musicos.push(m); res.json(m); });
+router.put('/musicos/:id', (req, res) => { const i = db.musicos.findIndex(m => m.id === req.params.id); if(i>=0) Object.assign(db.musicos[i], req.body); res.json(db.musicos[i]); });
+router.delete('/musicos/:id', (req, res) => { db.musicos = db.musicos.filter(m => m.id !== req.params.id); res.json({ok:true}); });
+router.get('/fotos', (req, res) => res.json(db.fotos));
+router.post('/fotos', (req, res) => { const f = {...req.body, id: Date.now().toString()}; db.fotos.push(f); res.json(f); });
+router.delete('/fotos/:id', (req, res) => { db.fotos = db.fotos.filter(f => f.id !== req.params.id); res.json({ok:true}); });
+router.get('/videos', (req, res) => res.json(db.videos));
+router.post('/videos', (req, res) => { const v = {...req.body, id: Date.now().toString()}; db.videos.push(v); res.json(v); });
+router.put('/videos/:id', (req, res) => { const i = db.videos.findIndex(v => v.id === req.params.id); if(i>=0) Object.assign(db.videos[i], req.body); res.json(db.videos[i]); });
+router.delete('/videos/:id', (req, res) => { db.videos = db.videos.filter(v => v.id !== req.params.id); res.json({ok:true}); });
+router.get('/agenda', (req, res) => res.json(db.agenda));
+router.post('/agenda', (req, res) => { const a = {...req.body, id: Date.now().toString()}; db.agenda.push(a); res.json(a); });
+router.put('/agenda/:id', (req, res) => { const i = db.agenda.findIndex(a => a.id === req.params.id); if(i>=0) Object.assign(db.agenda[i], req.body); res.json(db.agenda[i]); });
+router.delete('/agenda/:id', (req, res) => { db.agenda = db.agenda.filter(a => a.id !== req.params.id); res.json({ok:true}); });
+router.get('/contatos', (req, res) => res.json(db.contatos));
+router.put('/contatos', (req, res) => { Object.assign(db.contatos, req.body); res.json(db.contatos); });
 
 app.use('/.netlify/functions/api', router);
-
 module.exports.handler = serverless(app);
