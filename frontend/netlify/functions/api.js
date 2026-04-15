@@ -6,7 +6,7 @@ const { Pool } = require('pg');
 const app = express();
 
 const pool = new Pool({
-  connectionString: process.env.SUPABASE_URL
+  connectionString: process.env.SUPABASE_URL.split('?')[0] + '?sslmode=require'
 });
 
 app.use(cors());
