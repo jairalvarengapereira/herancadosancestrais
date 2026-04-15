@@ -5,12 +5,8 @@ const { Pool } = require('pg');
 
 const app = express();
 
-console.log('ENV:', Object.keys(process.env).filter(k => k.includes('URL') || k.includes('DB')));
-
 const pool = new Pool({
-  connectionString: process.env.SUPABASE_URL,
-  connectionTimeoutMillis: 5000,
-  query_timeout: 10000
+  connectionString: process.env.SUPABASE_URL
 });
 
 app.use(cors());
@@ -19,13 +15,10 @@ app.use(express.json());
 const router = express.Router();
 
 router.get('/sobre', async (req, res) => {
-  console.log('Querying sobre...');
   try {
     const result = await pool.query('SELECT * FROM sobre WHERE id = 1');
-    console.log('Result rows:', result.rows.length);
     res.json(result.rows[0] || null);
   } catch (err) {
-    console.error('Error:', err.message);
     res.status(500).json({ error: err.message });
   }
 });
@@ -39,7 +32,6 @@ router.put('/sobre', async (req, res) => {
     );
     res.json(result.rows[0]);
   } catch (err) {
-    console.error('Error:', err);
     res.status(500).json({ error: err.message });
   }
 });
