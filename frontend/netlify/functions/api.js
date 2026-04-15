@@ -9,8 +9,8 @@ console.log('ENV:', Object.keys(process.env).filter(k => k.includes('URL') || k.
 
 const pool = new Pool({
   connectionString: process.env.SUPABASE_URL,
-  max: 1,
-  idleTimeoutMillis: 1000
+  connectionTimeoutMillis: 5000,
+  query_timeout: 10000
 });
 
 app.use(cors());
