@@ -1,6 +1,1 @@
-/api/sobre /.netlify/functions/api 200
-/api/musicos /.netlify/functions/api 200
-/api/fotos /.netlify/functions/api 200
-/api/videos /.netlify/functions/api 200
-/api/agenda /.netlify/functions/api 200
-/api/contatos /.netlify/functions/api 200
+/api/* /.netlify/functions/api/:splat 200
