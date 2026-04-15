@@ -7,8 +7,6 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 
 const db = {
-
-const db = {
   sobre: { id:1, titulo:"Raízes que não se perdem", texto1:"O Grupo Herança dos Ancestrais nasceu do amor profundo pelo samba de raiz.", texto2:"Formado em Belo Horizonte/MG.", texto3:"Do bar ao palco.", anos:"8+", shows:"200+", musicos:"6", foto:null },
   musicos: [{ id:"1", nome:"Faride", instrumento:"Voz e Pandeiro", bio:"Percussionista.", foto:null }],
   fotos: [],
