@@ -55,7 +55,10 @@ const db = {
 const router = express.Router();
 
 router.get('/sobre', (req, res) => res.json(db.sobre));
-router.put('/sobre', (req, res) => { Object.assign(db.sobre, req.body); res.json(db.sobre); });
+router.put('/sobre', (req, res) => { 
+  Object.assign(db.sobre, req.body); 
+  res.send('OK');
+});
 router.get('/musicos', (req, res) => res.json(db.musicos));
 router.post('/musicos', (req, res) => { const m = {...req.body, id: Date.now().toString()}; db.musicos.push(m); res.json(m); });
 router.put('/musicos/:id', (req, res) => { const i = db.musicos.findIndex(m => m.id === req.params.id); if(i>=0) Object.assign(db.musicos[i], req.body); res.json(db.musicos[i]); });
