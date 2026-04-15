@@ -1,0 +1,32 @@
+/* ============================================================
+   DESIGN TOKENS – Herança dos Ancestrais
+   ============================================================ */
+:root {
+  --verde:     #0B3022;
+  --verde-mid: #0e3d2b;
+  --verde-lt:  #143d2d;
+  --dourado:   #C5A059;
+  --dourado-lt:#d4b472;
+  --dourado-dk:#9e7d3e;
+  --bronze:    #8E6D3B;
+  --off-white: #F4F1EA;
+  --off-white2:#e8e4da;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+section { scroll-margin-top: 80px; }
+
+body {
+  background: var(--verde);
+  color: var(--off-white);
+  font-family: 'Lora', Georgia, serif;
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--dourado); text-decoration: none; transition: color .2s; }
+a:hover { color: var(--dourado-lt); }
+button { cursor: pointer; }
+input, select, textarea, button { font-family: inherit; }
