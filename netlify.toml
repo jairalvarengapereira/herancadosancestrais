@@ -6,7 +6,10 @@
 [functions]
   directory = "netlify/functions"
 
-# Redirects handled by _redirects
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
 
 [[plugins]]
   package = "@netlify/plugin-functions-install-core"
