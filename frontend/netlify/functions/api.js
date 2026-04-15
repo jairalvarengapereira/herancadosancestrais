@@ -4,10 +4,13 @@ const serverless = require('serverless-http');
 const { Pool } = require('pg');
 
 const app = express();
-const isProd = process.env.NETLIFY === 'true';
+
+console.log('ENV:', Object.keys(process.env).filter(k => k.includes('URL') || k.includes('DB')));
 
 const pool = new Pool({
-  connectionString: process.env.SUPABASE_URL
+  connectionString: process.env.SUPABASE_URL,
+  max: 1,
+  idleTimeoutMillis: 1000
 });
 
 app.use(cors());
@@ -16,11 +19,13 @@ app.use(express.json());
 const router = express.Router();
 
 router.get('/sobre', async (req, res) => {
+  console.log('Querying sobre...');
   try {
     const result = await pool.query('SELECT * FROM sobre WHERE id = 1');
+    console.log('Result rows:', result.rows.length);
     res.json(result.rows[0] || null);
   } catch (err) {
-    console.error('Error:', err);
+    console.error('Error:', err.message);
     res.status(500).json({ error: err.message });
   }
 });
