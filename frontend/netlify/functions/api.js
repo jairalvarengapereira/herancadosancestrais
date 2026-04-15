@@ -7,7 +7,7 @@ const app = express();
 const isProd = process.env.NETLIFY === 'true';
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || process.env.NEON_URL
+  connectionString: process.env.SUPABASE_URL
 });
 
 app.use(cors());
