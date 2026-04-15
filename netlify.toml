@@ -1,0 +1,12 @@
+[build]
+  # O local onde o projeto de verdade está
+  base = "frontend"
+  
+  # O comando para gerar o site dentro da pasta frontend
+  command = "npm run build"
+  
+  # A pasta que o Netlify deve publicar (gerada pelo Vite)
+  publish = "dist"
+
+[functions]
+  directory = "netlify/functions"
