@@ -1,7 +1,6 @@
 import axios from 'axios'
 
-const isProd = import.meta.env.PROD === 'true' || window.location.hostname.includes('netlify')
-const baseURL = isProd ? '/.netlify/functions/api' : '/api'
+const baseURL = '/.netlify/functions/api'
 const api = axios.create({ baseURL })
 
 // ── Sobre ──────────────────────────────────────────────────────
