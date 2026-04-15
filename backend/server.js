@@ -53,11 +53,59 @@ async function uploadToSupabase(file) {
 app.use(cors());
 app.use(express.json());
 
+// ── Rotas: Seed/Setup ─────────────────────────────────────────
+app.post('/api/seed', async (req, res) => {
+  try {
+    const fs = require('fs');
+    const db = JSON.parse(fs.readFileSync('./data/db.json', 'utf8'));
+    
+    // Upsert Sobre (update or insert)
+    const { error: sobreError } = await supabase.from('sobre').upsert([{ id: 1, ...db.sobre }]);
+    if (sobreError) console.error('Sobre error:', sobreError);
+    
+    // Limpar e inserir Músicos
+    await supabase.from('musicos').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    for (const m of db.musicos) {
+      await supabase.from('musicos').insert([m]);
+    }
+    
+    // Limpar e inserir Videos
+    await supabase.from('videos').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    for (const v of db.videos) {
+      await supabase.from('videos').insert([v]);
+    }
+    
+    // Limpar e inserir Agenda
+    await supabase.from('agenda').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    for (const a of db.agenda) {
+      await supabase.from('agenda').insert([a]);
+    }
+    
+    // Upsert Contatos
+    await supabase.from('contatos').upsert([{ id: 1, ...db.contatos }]);
+    
+    res.json({ ok: true, message: 'Dados inseridos com textos completos' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ── Rotas: Sobre ───────────────────────────────────────────────
 app.get('/api/sobre', async (req, res) => {
-  const { data, error } = await supabase.from('sobre').select('*').single();
-  if (error) return res.status(500).json(error);
-  res.json(data);
+  try {
+    const { data, error } = await supabase.from('sobre').select('*').single();
+    if (error) {
+      console.error('Supabase error:', error);
+      return res.status(500).json({ error: error.message, details: error });
+    }
+    if (!data) {
+      return res.status(404).json({ error: 'Tabela vazia' });
+    }
+    res.json(data);
+  } catch (err) {
+    console.error('Catch error:', err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 app.put('/api/sobre', upload.single('foto'), async (req, res) => {
@@ -67,13 +115,34 @@ app.put('/api/sobre', upload.single('foto'), async (req, res) => {
       fotoUrl = await uploadToSupabase(req.file);
     }
 
+    // Se vierem textos no body, usar eles
+    const updateData = { ...req.body };
+    if (fotoUrl) updateData.foto = fotoUrl;
+
     const { data, error } = await supabase
       .from('sobre')
-      .update({ ...req.body, foto: fotoUrl })
+      .update(updateData)
       .eq('id', 1)
       .select()
       .single();
 
+    if (error) throw error;
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Endpoint simples para atualizar textos
+app.post('/api/sobre-textos', async (req, res) => {
+  try {
+    const { titulo, texto1, texto2, texto3, anos, shows, musicos } = req.body;
+    const { data, error } = await supabase
+      .from('sobre')
+      .update({ titulo, texto1, texto2, texto3, anos, shows, musicos })
+      .eq('id', 1)
+      .select()
+      .single();
     if (error) throw error;
     res.json(data);
   } catch (err) {
