@@ -58,6 +58,116 @@ router.get('/contatos', async (req, res) => {
   res.json(data);
 });
 
+router.put('/sobre', async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('sobre').update(req.body).eq('id', 1).select().single();
+    if (error) throw error;
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.put('/contatos', async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('contatos').update(req.body).eq('id', 1).select().single();
+    if (error) throw error;
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.post('/musicos', async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('musicos').insert([req.body]).select().single();
+    if (error) throw error;
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.put('/musicos/:id', async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('musicos').update(req.body).eq('id', req.params.id).select().single();
+    if (error) throw error;
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.delete('/musicos/:id', async (req, res) => {
+  try {
+    const { error } = await supabase.from('musicos').delete().eq('id', req.params.id);
+    if (error) throw error;
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.post('/videos', async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('videos').insert([req.body]).select().single();
+    if (error) throw error;
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.put('/videos/:id', async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('videos').update(req.body).eq('id', req.params.id).select().single();
+    if (error) throw error;
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.delete('/videos/:id', async (req, res) => {
+  try {
+    const { error } = await supabase.from('videos').delete().eq('id', req.params.id);
+    if (error) throw error;
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.post('/agenda', async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('agenda').insert([req.body]).select().single();
+    if (error) throw error;
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.put('/agenda/:id', async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('agenda').update(req.body).eq('id', req.params.id).select().single();
+    if (error) throw error;
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.delete('/agenda/:id', async (req, res) => {
+  try {
+    const { error } = await supabase.from('agenda').delete().eq('id', req.params.id);
+    if (error) throw error;
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.use('/.netlify/functions/api', router);
 
 module.exports.handler = serverless(app);
