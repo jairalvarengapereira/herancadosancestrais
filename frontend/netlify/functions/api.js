@@ -44,6 +44,7 @@ app.get('/.netlify/functions/api/musicos', async (req, res) => {
 
 app.post('/.netlify/functions/api/musicos', async (req, res) => {
   try {
+    console.log('POST musicos body:', req.body);
     const { nome, instrumento, bio, foto } = req.body;
     const result = await pool.query(
       'INSERT INTO musicos (nome, instrumento, bio, foto) VALUES ($1, $2, $3, $4) RETURNING *',
@@ -51,6 +52,7 @@ app.post('/.netlify/functions/api/musicos', async (req, res) => {
     );
     res.json(result.rows[0]);
   } catch (err) {
+    console.error('Error musicos:', err);
     res.status(500).json({ error: err.message });
   }
 });
