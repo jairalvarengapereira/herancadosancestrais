@@ -46,6 +46,11 @@ const SaveMsg = ({msg}) => msg ? <p style={{fontSize:13,color:msg.type==='ok'?C.
 function TabSobre() {
   const [d, setD] = useState(null)
   const [msg, setMsg] = useState(null)
+  
+  useEffect(() => { getSobre().then(setD).catch(() => {}) }, [])
+
+  const set = (k) => e => setD({...d, [k]: e.target.value})
+  
   const save = async () => {
     try {
       const updated = await updateSobre({titulo:d.titulo, texto1:d.texto1, texto2:d.texto2, texto3:d.texto3, anos:d.anos, shows:d.shows, musicos:d.musicos})
