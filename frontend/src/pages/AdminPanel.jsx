@@ -46,7 +46,7 @@ const SaveMsg = ({msg}) => msg ? <p style={{fontSize:13,color:msg.type==='ok'?C.
 function TabSobre() {
   const [d, setD] = useState(null)
   const [msg, setMsg] = useState(null)
-const save = async () => {
+  const save = async () => {
     try {
       const updated = await updateSobre({titulo:d.titulo, texto1:d.texto1, texto2:d.texto2, texto3:d.texto3, anos:d.anos, shows:d.shows, musicos:d.musicos})
       setD(updated)
@@ -54,11 +54,8 @@ const save = async () => {
     } catch { setMsg({type:'err',text:'✗ Erro ao salvar.'}) }
     setTimeout(() => setMsg(null), 3000)
   }
-    catch { setMsg({type:'err',text:'✗ Erro ao salvar.'}) }
-    setTimeout(() => setMsg(null), 3000)
-  }
 
-return (
+  return (
     <div>
       <h3 style={{fontFamily:"'Cinzel',serif",color:C.dourado,marginBottom:'1.5rem',fontSize:15,letterSpacing:'.1em'}}>Seção — Nossa História</h3>
        
