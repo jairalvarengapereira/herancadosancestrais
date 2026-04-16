@@ -2,13 +2,20 @@ const express = require('express');
 const cors = require('cors');
 const serverless = require('serverless-http');
 const { Pool } = require('pg');
+const cloudinary = require('cloudinary').v2;
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 
 const pool = new Pool({
   connectionString: process.env.SUPABASE_URL
+});
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 app.get('/.netlify/functions/api/sobre', async (req, res) => {
@@ -222,6 +229,22 @@ app.put('/.netlify/functions/api/contatos', async (req, res) => {
       [whatsapp, instagram, facebook, youtube]
     );
     res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/.netlify/functions/api/upload', async (req, res) => {
+  try {
+    const { image } = req.body;
+    if (!image) {
+      return res.status(400).json({ error: 'Nenhuma imagem encontrada' });
+    }
+    const uploadResponse = await cloudinary.uploader.upload(image, {
+      folder: 'heranca-dos-ancestrais',
+      transformation: [{ width: 800, height: 800, crop: 'limit' }]
+    });
+    res.json({ url: uploadResponse.secure_url });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

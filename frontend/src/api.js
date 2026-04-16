@@ -34,3 +34,6 @@ export const deleteShow  = (id) => api.delete(`/agenda/${id}`).then(r => r.data)
 // ── Contatos ───────────────────────────────────────────────────
 export const getContatos   = () => api.get('/contatos').then(r => r.data)
 export const updateContatos = (data) => api.put('/contatos', data).then(r => r.data)
+
+// ── Upload ───────────────────────────────────────────────────────
+export const uploadImage = (base64Image) => api.post('/upload', { image: base64Image }).then(r => r.data)

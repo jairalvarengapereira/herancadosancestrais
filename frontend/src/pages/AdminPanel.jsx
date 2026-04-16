@@ -5,7 +5,8 @@ import {
   getFotos, uploadFoto, updateFoto, deleteFoto,
   getVideos, createVideo, updateVideo, deleteVideo,
   getAgenda, createShow, updateShow, deleteShow,
-  getContatos, updateContatos
+  getContatos, updateContatos,
+  uploadImage
 } from '../api'
 
 /* ── Design tokens ── */
@@ -112,7 +113,7 @@ function TabMusicos() {
         const created = await createMusico(buildData())
         setList([...list, created])
       }
-      setEditing(null); setAdding(false); setForm({nome:'',instrumento:'',bio:'',foto:null})
+      setEditing(null); setAdding(false); setForm({nome:'',instrumento:'',bio:'',foto:''})
       flash('ok', '✓ Músico salvo!')
     } catch { flash('err','✗ Erro ao salvar.') }
   }
@@ -139,7 +140,22 @@ function TabMusicos() {
           <Label>Nome</Label><Input value={form.nome} onChange={e=>setForm({...form,nome:e.target.value})} placeholder="Nome completo" />
           <Label>Instrumento</Label><Input value={form.instrumento} onChange={e=>setForm({...form,instrumento:e.target.value})} placeholder="Ex: Pandeiro" />
           <Label>Bio</Label><Textarea value={form.bio} onChange={e=>setForm({...form,bio:e.target.value})} placeholder="Breve descrição" />
-          <Label>Foto URL</Label><Input value={form.foto} onChange={e=>setForm({...form,foto:e.target.value})} placeholder="https://..." />
+          <Label>Foto</Label>
+          <input type="file" accept="image/*" onChange={async e => {
+            const file = e.target.files[0]
+            if (!file) return
+            flash('aguarde', 'Enviando foto...')
+            const reader = new FileReader()
+            reader.onload = async () => {
+              try {
+                const result = await uploadImage(reader.result)
+                setForm({...form, foto: result.url})
+                flash('ok', 'Foto enviada!')
+              } catch { flash('err', 'Erro ao enviar') }
+            }
+            reader.readAsDataURL(file)
+          }} style={{color:C.offWhite2,marginBottom:'.5rem',fontSize:13}} />
+          {form.foto && <img src={form.foto} alt="Preview" style={{width:60,height:60,objectFit:'cover',borderRadius:4}} />}
           <div style={{display:'flex',gap:'.75rem'}}>
             <BtnPrimary onClick={save}>Salvar</BtnPrimary>
             <button onClick={cancel} style={{background:'transparent',border:'1px solid rgba(197,160,89,.3)',color:C.offWhite2,fontFamily:"'Cinzel',serif",fontSize:11,letterSpacing:'.1em',textTransform:'uppercase',padding:'.65rem 1rem',borderRadius:3,cursor:'pointer'}}>Cancelar</button>
