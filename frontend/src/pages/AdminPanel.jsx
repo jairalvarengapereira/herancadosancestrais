@@ -88,7 +88,7 @@ if (!d) return <div style={{color:C.offWhite2}}>Carregando…</div>
 function TabMusicos() {
   const [list, setList] = useState([])
   const [editing, setEditing] = useState(null)
-  const [form, setForm] = useState({nome:'',instrumento:'',bio:'',foto:null})
+  const [form, setForm] = useState({nome:'',instrumento:'',bio:'',foto:''})
   const [adding, setAdding] = useState(false)
   const [msg, setMsg] = useState(null)
 
@@ -96,22 +96,20 @@ function TabMusicos() {
 
   const flash = (type, text) => { setMsg({type,text}); setTimeout(()=>setMsg(null),3000) }
 
-  const buildFormData = () => {
-    const fd = new FormData()
-    fd.append('nome', form.nome)
-    fd.append('instrumento', form.instrumento)
-    fd.append('bio', form.bio)
-    if (form.foto) fd.append('foto', form.foto)
-    return fd
-  }
+  const buildData = () => ({
+    nome: form.nome,
+    instrumento: form.instrumento,
+    bio: form.bio,
+    foto: form.foto || ''
+  })
 
   const save = async () => {
     try {
       if (editing) {
-        const updated = await updateMusico(editing.id, buildFormData())
+        const updated = await updateMusico(editing.id, buildData())
         setList(list.map(m => m.id === editing.id ? updated : m))
       } else {
-        const created = await createMusico(buildFormData())
+        const created = await createMusico(buildData())
         setList([...list, created])
       }
       setEditing(null); setAdding(false); setForm({nome:'',instrumento:'',bio:'',foto:null})
@@ -125,8 +123,8 @@ function TabMusicos() {
     setList(list.filter(m => m.id !== id))
   }
 
-  const startEdit = (m) => { setEditing(m); setAdding(true); setForm({nome:m.nome,instrumento:m.instrumento,bio:m.bio,foto:null}) }
-  const cancel = () => { setEditing(null); setAdding(false); setForm({nome:'',instrumento:'',bio:'',foto:null}) }
+  const startEdit = (m) => { setEditing(m); setAdding(true); setForm({nome:m.nome,instrumento:m.instrumento,bio:m.bio,foto:m.foto || ''}) }
+  const cancel = () => { setEditing(null); setAdding(false); setForm({nome:'',instrumento:'',bio:'',foto:''}) }
 
   return (
     <div>
@@ -141,8 +139,7 @@ function TabMusicos() {
           <Label>Nome</Label><Input value={form.nome} onChange={e=>setForm({...form,nome:e.target.value})} placeholder="Nome completo" />
           <Label>Instrumento</Label><Input value={form.instrumento} onChange={e=>setForm({...form,instrumento:e.target.value})} placeholder="Ex: Pandeiro" />
           <Label>Bio</Label><Textarea value={form.bio} onChange={e=>setForm({...form,bio:e.target.value})} placeholder="Breve descrição" />
-          <Label>Foto</Label>
-          <input type="file" accept="image/*" onChange={e=>setForm({...form,foto:e.target.files[0]})} style={{color:C.offWhite2,marginBottom:'1rem',fontSize:13}} />
+          <Label>Foto URL</Label><Input value={form.foto} onChange={e=>setForm({...form,foto:e.target.value})} placeholder="https://..." />
           <div style={{display:'flex',gap:'.75rem'}}>
             <BtnPrimary onClick={save}>Salvar</BtnPrimary>
             <button onClick={cancel} style={{background:'transparent',border:'1px solid rgba(197,160,89,.3)',color:C.offWhite2,fontFamily:"'Cinzel',serif",fontSize:11,letterSpacing:'.1em',textTransform:'uppercase',padding:'.65rem 1rem',borderRadius:3,cursor:'pointer'}}>Cancelar</button>

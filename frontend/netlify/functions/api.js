@@ -44,29 +44,36 @@ app.get('/.netlify/functions/api/musicos', async (req, res) => {
 
 app.post('/.netlify/functions/api/musicos', async (req, res) => {
   try {
-    console.log('POST musicos body:', req.body);
     const { nome, instrumento, bio, foto } = req.body;
+    if (!nome || !instrumento) {
+      return res.status(400).json({ error: 'nome e instrumento são obrigatórios', body: req.body });
+    }
     const result = await pool.query(
       'INSERT INTO musicos (nome, instrumento, bio, foto) VALUES ($1, $2, $3, $4) RETURNING *',
       [nome, instrumento, bio, foto]
     );
     res.json(result.rows[0]);
   } catch (err) {
-    console.error('Error musicos:', err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message, stack: err.stack });
   }
 });
 
 app.put('/.netlify/functions/api/musicos/:id', async (req, res) => {
   try {
     const { nome, instrumento, bio, foto } = req.body;
+    if (!nome || !instrumento) {
+      return res.status(400).json({ error: 'nome e instrumento são obrigatórios', body: req.body });
+    }
     const result = await pool.query(
       'UPDATE musicos SET nome=$1, instrumento=$2, bio=$3, foto=$4 WHERE id=$5 RETURNING *',
       [nome, instrumento, bio, foto, req.params.id]
     );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Músico não encontrado' });
+    }
     res.json(result.rows[0]);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message, stack: err.stack });
   }
 });
 

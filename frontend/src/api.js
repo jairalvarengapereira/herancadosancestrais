@@ -9,8 +9,8 @@ export const updateSobre = (data) => api.put('/sobre', data).then(r => r.data)
 
 // ── Músicos ────────────────────────────────────────────────────
 export const getMusicos   = () => api.get('/musicos').then(r => r.data)
-export const createMusico = (formData) => api.post('/musicos', formData).then(r => r.data)
-export const updateMusico = (id, formData) => api.put(`/musicos/${id}`, formData).then(r => r.data)
+export const createMusico = (data) => api.post('/musicos', data).then(r => r.data)
+export const updateMusico = (id, data) => api.put(`/musicos/${id}`, data).then(r => r.data)
 export const deleteMusico = (id) => api.delete(`/musicos/${id}`).then(r => r.data)
 
 // ── Fotos ──────────────────────────────────────────────────────
