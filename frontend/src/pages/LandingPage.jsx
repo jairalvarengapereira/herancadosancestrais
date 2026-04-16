@@ -165,7 +165,7 @@ function Sobre() {
   return (
     <Secao id="sobre">
       {data ? (
-        <div style={{maxWidth:1100,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:'4rem',alignItems:'center'}} className="sobre-grid">
+<div style={{maxWidth:1100,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:'4rem',alignItems:'center'}} className="sobre-grid">
         <div style={{position:'relative'}}>
           <div style={{
             width:'100%', aspectRatio:'4/5',
@@ -173,11 +173,9 @@ function Sobre() {
             borderRadius:4, display:'flex', alignItems:'center', justifyContent:'center',
             border:'1px solid rgba(197,160,89,.2)', overflow:'hidden'
           }}>
-            {data.foto 
-              ? <img src={data.foto} alt="Nosso Grupo" style={{width:'100%', height:'100%', objectFit:'cover'}} />
-              : <span style={{fontFamily:"'Cinzel Decorative',serif",fontSize:'5rem',color:'rgba(197,160,89,.15)'}}>♪</span>
-            }
+            <img src="/Componentes.png" alt="Componentes" style={{width:'100%', height:'100%', objectFit:'cover'}} />
           </div>
+        </div>
           {/* decorative corners */}
           {[['tl','2px 0 0 2px','top left'],['tr','2px 2px 0 0','top right'],['bl','0 0 2px 2px','bottom left'],['br','0 2px 2px 0','bottom right']].map(([k]) => null)}
         </div>

@@ -46,49 +46,22 @@ const SaveMsg = ({msg}) => msg ? <p style={{fontSize:13,color:msg.type==='ok'?C.
 function TabSobre() {
   const [d, setD] = useState(null)
   const [msg, setMsg] = useState(null)
-  const [newFoto, setNewFoto] = useState(null)
-
-  useEffect(() => { getSobre().then(setD) }, [])
-  if (!d) return <p style={{color:C.offWhite2}}>Carregando…</p>
-  
-  const set = (k) => e => setD({...d,[k]:e.target.value})
-  
-  const save = async () => {
+const save = async () => {
     try {
-      const fd = new FormData()
-      fd.append('titulo', d.titulo)
-      fd.append('texto1', d.texto1)
-      fd.append('texto2', d.texto2)
-      fd.append('texto3', d.texto3)
-      fd.append('anos', d.anos)
-      fd.append('shows', d.shows)
-      fd.append('musicos', d.musicos)
-      if (newFoto) fd.append('foto', newFoto)
-
-      const updated = await updateSobre(fd)
+      const updated = await updateSobre({titulo:d.titulo, texto1:d.texto1, texto2:d.texto2, texto3:d.texto3, anos:d.anos, shows:d.shows, musicos:d.musicos})
       setD(updated)
-      setNewFoto(null)
       setMsg({type:'ok',text:'✓ Salvo com sucesso!'})
-    }
+    } catch { setMsg({type:'err',text:'✗ Erro ao salvar.'}) }
+    setTimeout(() => setMsg(null), 3000)
+  }
     catch { setMsg({type:'err',text:'✗ Erro ao salvar.'}) }
     setTimeout(() => setMsg(null), 3000)
   }
 
-  return (
+return (
     <div>
       <h3 style={{fontFamily:"'Cinzel',serif",color:C.dourado,marginBottom:'1.5rem',fontSize:15,letterSpacing:'.1em'}}>Seção — Nossa História</h3>
-      
-      <div style={{display:'flex', gap:'1.5rem', marginBottom:'1.5rem', alignItems:'flex-start'}}>
-        <div style={{width:120, height:150, borderRadius:4, background:C.verdeLt, overflow:'hidden', flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center', border:'1px solid rgba(197,160,89,.2)'}}>
-          {d.foto ? <img src={d.foto} alt="Preview" style={{width:'100%', height:'100%', objectFit:'cover'}} /> : <span style={{fontSize:40, color:'rgba(197,160,89,.15)'}}>♪</span>}
-        </div>
-        <div style={{flex:1}}>
-          <Label>Foto de Capa</Label>
-          <input type="file" accept="image/*" onChange={e => setNewFoto(e.target.files[0])} style={{color:C.offWhite2, marginBottom:'.5rem', fontSize:13}} />
-          <p style={{fontSize:11, color:C.bronze, opacity:.7}}>Recomendado: Proporção 4:5 ou similar.</p>
-        </div>
-      </div>
-
+       
       <Label>Título</Label><Input value={d.titulo} onChange={set('titulo')} />
       <Label>Parágrafo 1</Label><Textarea value={d.texto1} onChange={set('texto1')} />
       <Label>Parágrafo 2</Label><Textarea value={d.texto2} onChange={set('texto2')} />
