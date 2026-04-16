@@ -60,7 +60,7 @@ function TabSobre() {
     setTimeout(() => setMsg(null), 3000)
   }
 
-  return (
+return d ? (
     <div>
       <h3 style={{fontFamily:"'Cinzel',serif",color:C.dourado,marginBottom:'1.5rem',fontSize:15,letterSpacing:'.1em'}}>Seção — Nossa História</h3>
        
