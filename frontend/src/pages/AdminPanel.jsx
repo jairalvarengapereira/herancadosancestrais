@@ -60,10 +60,11 @@ function TabSobre() {
     setTimeout(() => setMsg(null), 3000)
   }
 
-return d ? (
+if (!d) return <div style={{color:C.offWhite2}}>Carregando…</div>
+  
+  return (
     <div>
       <h3 style={{fontFamily:"'Cinzel',serif",color:C.dourado,marginBottom:'1.5rem',fontSize:15,letterSpacing:'.1em'}}>Seção — Nossa História</h3>
-       
       <Label>Título</Label><Input value={d.titulo} onChange={set('titulo')} />
       <Label>Parágrafo 1</Label><Textarea value={d.texto1} onChange={set('texto1')} />
       <Label>Parágrafo 2</Label><Textarea value={d.texto2} onChange={set('texto2')} />
