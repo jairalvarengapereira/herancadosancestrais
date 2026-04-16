@@ -166,21 +166,18 @@ function Sobre() {
     <Secao id="sobre">
       {data ? (
 <div style={{maxWidth:1100,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:'4rem',alignItems:'center'}} className="sobre-grid">
-        <div style={{position:'relative'}}>
-          <div style={{
-            width:'100%', aspectRatio:'4/5',
-            background:'linear-gradient(135deg,#0e3d2b 0%,#071e12 100%)',
-            borderRadius:4, display:'flex', alignItems:'center', justifyContent:'center',
-            border:'1px solid rgba(197,160,89,.2)', overflow:'hidden'
-          }}>
-            <img src="/Componentes.png" alt="Componentes" style={{width:'100%', height:'100%', objectFit:'cover'}} />
+          <div style={{position:'relative'}}>
+            <div style={{
+              width:'100%', aspectRatio:'4/5',
+              background:'linear-gradient(135deg,#0e3d2b 0%,#071e12 100%)',
+              borderRadius:4, display:'flex', alignItems:'center', justifyContent:'center',
+              border:'1px solid rgba(197,160,89,.2)', overflow:'hidden'
+            }}>
+              <img src="/Componentes.png" alt="Componentes" style={{width:'100%', height:'100%', objectFit:'cover'}} />
+            </div>
           </div>
-        </div>
-          {/* decorative corners */}
-          {[['tl','2px 0 0 2px','top left'],['tr','2px 2px 0 0','top right'],['bl','0 0 2px 2px','bottom left'],['br','0 2px 2px 0','bottom right']].map(([k]) => null)}
-        </div>
 
-        <div {...f} style={{...f.style}}>
+          <div {...f} style={{...f.style}}>
           <p style={{fontFamily:"'Cinzel',serif",fontSize:11,letterSpacing:'.22em',textTransform:'uppercase',color:C.bronze,marginBottom:'.5rem'}}>Nossa História</p>
           <h2 style={{fontFamily:"'Cinzel',serif",fontWeight:700,color:C.dourado,fontSize:'clamp(1.4rem,3vw,2rem)',marginBottom:'1.5rem',letterSpacing:'.05em'}}>{data.titulo}</h2>
           <p style={{color:C.offWhite2,marginBottom:'1rem',opacity:.88}}>{data.texto1}</p>
