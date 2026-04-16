@@ -7,7 +7,7 @@ const musicos = [], fotos = [], videos = [], agenda = [];
 const contatos = { whatsapp:"5531999999999", instagram:"ig", facebook:"fb", youtube:"yt" };
 
 app.get('/.netlify/functions/api/sobre', (req, res) => res.json(sobre));
-app.put('/.netlify/functions/api/sobre', (req, res) => { Object.assign(sobre, req.body); res.json({ok:true}); });
+app.put('/.netlify/functions/api/sobre', (req, res) => { Object.assign(sobre, req.body); res.json(sobre); });
 app.get('/.netlify/functions/api/musicos', (req, res) => res.json(musicos));
 app.post('/.netlify/functions/api/musicos', (req, res) => { musicos.push({...req.body, id:Date.now().toString()}); res.json({ok:true}); });
 app.put('/.netlify/functions/api/musicos/:id', (req, res) => res.json({ok:true}));
