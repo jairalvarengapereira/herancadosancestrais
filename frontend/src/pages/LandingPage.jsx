@@ -109,7 +109,7 @@ function Hero() {
       ))}
 
       <img src="/Logo2_1.png" alt="Herança dos Ancestrais" style={{
-        width:'clamp(220px, 55vw, 420px)', height:'clamp(220px, 55vw, 420px)', objectFit:'contain',
+        width:'clamp(250px, 65vw, 480px)', height:'clamp(250px, 65vw, 480px)', objectFit:'contain',
         marginBottom:'2rem', position:'relative', zIndex:1,
         borderRadius: '50%',
         boxShadow: '0 0 0 3px rgba(197,160,89,0.6), 0 8px 40px rgba(197,160,89,.35)'
