@@ -197,9 +197,15 @@ function TabFotos() {
 
   const upload = async () => {
     if (!file) { flash('err','✗ Selecione uma imagem.'); return }
-    const fd = new FormData(); fd.append('foto', file); fd.append('legenda', legenda)
-    const nova = await uploadFoto(fd)
-    setFotos([...fotos, nova]); setFile(null); setLegenda(''); flash('ok','✓ Foto adicionada!')
+    flash('aguarde', 'Enviando...')
+    const reader = new FileReader()
+    reader.onload = async () => {
+      try {
+        const nova = await uploadFoto({ image: reader.result, legenda })
+        setFotos([...fotos, nova]); setFile(null); setLegenda(''); flash('ok','✓ Foto adicionada!')
+      } catch { flash('err','✗ Erro ao enviar') }
+    }
+    reader.readAsDataURL(file)
   }
   const del = async (id) => {
     if (!confirm('Remover foto?')) return

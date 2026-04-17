@@ -104,14 +104,24 @@ app.get('/.netlify/functions/api/fotos', async (req, res) => {
 
 app.post('/.netlify/functions/api/fotos', async (req, res) => {
   try {
-    const { url, legenda } = req.body;
+    let { url, legenda, image } = req.body;
+    if (!url && !image) {
+      return res.status(400).json({ error: 'URL ou imagem necessários' });
+    }
+    if (image) {
+      const uploadResponse = await cloudinary.uploader.upload(image, {
+        folder: 'heranca-dos-ancestrais',
+        transformation: [{ width: 1200, height: 1200, crop: 'limit' }]
+      });
+      url = uploadResponse.secure_url;
+    }
     const result = await pool.query(
       'INSERT INTO fotos (url, legenda) VALUES ($1, $2) RETURNING *',
-      [url, legenda]
+      [url, legenda || '']
     );
     res.json(result.rows[0]);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message, detail: err.stack });
   }
 });
 
