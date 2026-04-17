@@ -168,12 +168,12 @@ function Sobre() {
 <div style={{maxWidth:1100,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:'4rem',alignItems:'center'}} className="sobre-grid">
           <div style={{position:'relative'}}>
             <div style={{
-              width:'100%', aspectRatio:'4/5',
+              width:'100%', aspectRatio:'3/2',
               background:'linear-gradient(135deg,#0e3d2b 0%,#071e12 100%)',
               borderRadius:4, display:'flex', alignItems:'center', justifyContent:'center',
               border:'1px solid rgba(197,160,89,.2)', overflow:'hidden'
             }}>
-              <img src="/Capa.png" alt="Capa" style={{width:'100%', height:'100%', objectFit:'cover'}} />
+              <img src="/Capa.png" alt="Capa" style={{width:'100%', height:'100%', objectFit:'contain'}} />
             </div>
           </div>
 
