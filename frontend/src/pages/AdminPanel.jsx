@@ -350,7 +350,7 @@ setEditing(null); setAdding(false); setForm({dia:'',mes:'',nome:'',local:'',ende
           </div>
           <Label>Nome do Evento</Label><Input value={form.nome} onChange={set('nome')} placeholder="Festival de Samba…" />
           <Label>Local e Cidade</Label><Input value={form.local} onChange={set('local')} placeholder="Nome do local · Cidade, MG" />
-          <Label>Endereço Google Maps (URL)</Label><Input value={form.endereco} onChange={set('endereco')} placeholder="https://maps.google.com/..." />
+          <Label>Endereço do Evento</Label><Input value={form.endereco} onChange={set('endereco')} placeholder="Nome do local, Rua, Belo Horizonte, MG" />
           <Label>Status</Label>
           <select value={form.status} onChange={set('status')} style={{width:'100%',background:'rgba(11,48,34,.7)',border:'1px solid rgba(197,160,89,.25)',borderRadius:3,color:C.offWhite,fontFamily:"'Lora',serif",fontSize:14,padding:'.65rem .9rem',outline:'none',marginBottom:'1rem',appearance:'none'}}>
             <option value="confirmado">Confirmado</option>
@@ -374,7 +374,7 @@ setEditing(null); setAdding(false); setForm({dia:'',mes:'',nome:'',local:'',ende
           <div style={{flex:1,borderLeft:'1px solid rgba(197,160,89,.2)',paddingLeft:'1rem'}}>
             <p style={{fontFamily:"'Cinzel',serif",color:C.offWhite,fontWeight:700,fontSize:13}}>{s.nome}</p>
             <p style={{fontSize:12,color:C.bronze}}>{s.local}</p>
-            {s.endereco && <><p style={{fontSize:11,color:C.bronze,marginTop:'.2rem'}}>📍 {s.endereco}</p><a href={s.endereco} target="_blank" rel="noopener noreferrer" style={{fontSize:10,color:C.dourado,textDecoration:'none'}}>Ver no GPS →</a></>}
+            {s.endereco && <><p style={{fontSize:11,color:C.bronze,marginTop:'.2rem'}}>📍 {s.endereco}</p><a href={'https://www.google.com/maps/search/' + encodeURIComponent(s.endereco)} target="_blank" rel="noopener noreferrer" style={{fontSize:10,color:C.dourado,textDecoration:'none'}}>Ver no GPS →</a></>}
           </div>
           <span style={{fontSize:10,fontFamily:"'Cinzel',serif",letterSpacing:'.1em',textTransform:'uppercase',padding:'.25rem .6rem',borderRadius:2,
             ...(s.status==='confirmado'?{background:'rgba(11,48,34,.8)',color:'#4ade80',border:'1px solid rgba(74,222,128,.25)'}:{background:'rgba(197,160,89,.15)',color:C.dourado,border:'1px solid rgba(197,160,89,.35)'})
