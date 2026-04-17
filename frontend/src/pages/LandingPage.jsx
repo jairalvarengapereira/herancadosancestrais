@@ -173,7 +173,7 @@ function Sobre() {
               borderRadius:4, display:'flex', alignItems:'center', justifyContent:'center',
               border:'1px solid rgba(197,160,89,.2)', overflow:'hidden'
             }}>
-              <img src="/Componentes.png" alt="Componentes" style={{width:'100%', height:'100%', objectFit:'cover'}} />
+              <img src="/capa.png" alt="Capa" style={{width:'100%', height:'100%', objectFit:'cover'}} />
             </div>
           </div>
 
