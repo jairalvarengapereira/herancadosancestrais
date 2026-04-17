@@ -308,7 +308,7 @@ function TabVideos() {
 function TabAgenda() {
   const [shows, setShows] = useState([])
   const [editing, setEditing] = useState(null)
-  const [form, setForm] = useState({dia:'',mes:'',nome:'',local:'',endereco:'',status:'confirmado'})
+  const [form, setForm] = useState({dia:'',mes:'',nome:'',local:'',endereco:'',horario:'',status:'confirmado'})
   const [adding, setAdding] = useState(false)
   const [msg, setMsg] = useState(null)
   const flash = (type,text) => { setMsg({type,text}); setTimeout(()=>setMsg(null),3000) }
@@ -323,7 +323,7 @@ function TabAgenda() {
       } else {
         const n = await createShow(form); setShows([...shows,n])
       }
-setEditing(null); setAdding(false); setForm({dia:'',mes:'',nome:'',local:'',endereco:'',status:'confirmado'})
+setEditing(null); setAdding(false); setForm({dia:'',mes:'',nome:'',local:'',endereco:'',horario:'',status:'confirmado'})
       flash('ok','✓ Show salvo!')
     } catch { flash('err','✗ Erro ao salvar.') }
   }
@@ -331,8 +331,8 @@ setEditing(null); setAdding(false); setForm({dia:'',mes:'',nome:'',local:'',ende
     if (!confirm('Remover show?')) return
     await deleteShow(id); setShows(shows.filter(s=>s.id!==id))
   }
-  const startEdit = s => { setEditing(s); setAdding(true); setForm({dia:s.dia,mes:s.mes,nome:s.nome,local:s.local,endereco:s.endereco||'',status:s.status}) }
-  const cancel = () => { setEditing(null); setAdding(false); setForm({dia:'',mes:'',nome:'',local:'',endereco:'',status:'confirmado'}) }
+  const startEdit = s => { setEditing(s); setAdding(true); setForm({dia:s.dia,mes:s.mes,nome:s.nome,local:s.local,endereco:s.endereco||'',horario:s.horario||'',status:s.status}) }
+  const cancel = () => { setEditing(null); setAdding(false); setForm({dia:'',mes:'',nome:'',local:'',endereco:'',horario:'',status:'confirmado'}) }
 
   return (
     <div>
@@ -351,6 +351,7 @@ setEditing(null); setAdding(false); setForm({dia:'',mes:'',nome:'',local:'',ende
           <Label>Nome do Evento</Label><Input value={form.nome} onChange={set('nome')} placeholder="Festival de Samba…" />
           <Label>Local e Cidade</Label><Input value={form.local} onChange={set('local')} placeholder="Nome do local · Cidade, MG" />
           <Label>Endereço do Evento</Label><Input value={form.endereco} onChange={set('endereco')} placeholder="Nome do local, Rua, Belo Horizonte, MG" />
+          <Label>Horário</Label><Input value={form.horario} onChange={set('horario')} placeholder="21:00" />
           <Label>Status</Label>
           <select value={form.status} onChange={set('status')} style={{width:'100%',background:'rgba(11,48,34,.7)',border:'1px solid rgba(197,160,89,.25)',borderRadius:3,color:C.offWhite,fontFamily:"'Lora',serif",fontSize:14,padding:'.65rem .9rem',outline:'none',marginBottom:'1rem',appearance:'none'}}>
             <option value="confirmado">Confirmado</option>
@@ -374,6 +375,7 @@ setEditing(null); setAdding(false); setForm({dia:'',mes:'',nome:'',local:'',ende
           <div style={{flex:1,borderLeft:'1px solid rgba(197,160,89,.2)',paddingLeft:'1rem'}}>
             <p style={{fontFamily:"'Cinzel',serif",color:C.offWhite,fontWeight:700,fontSize:13}}>{s.nome}</p>
             <p style={{fontSize:12,color:C.bronze}}>{s.local}</p>
+            {s.horario && <p style={{fontSize:12,color:C.bronze,marginTop:'.2rem'}}>🕐 {s.horario}</p>}
             {s.endereco && <><p style={{fontSize:11,color:C.bronze,marginTop:'.2rem'}}>📍 {s.endereco}</p><a href={'https://www.google.com/maps/search/' + encodeURIComponent(s.endereco)} target="_blank" rel="noopener noreferrer" style={{fontSize:10,color:C.dourado,textDecoration:'none'}}>Ver no GPS →</a></>}
           </div>
           <span style={{fontSize:10,fontFamily:"'Cinzel',serif",letterSpacing:'.1em',textTransform:'uppercase',padding:'.25rem .6rem',borderRadius:2,

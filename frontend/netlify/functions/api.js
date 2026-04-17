@@ -189,10 +189,10 @@ app.get('/.netlify/functions/api/agenda', async (req, res) => {
 
 app.post('/.netlify/functions/api/agenda', async (req, res) => {
   try {
-    const { dia, mes, nome, local, endereco, status } = req.body;
+    const { dia, mes, nome, local, endereco, horario, status } = req.body;
     const result = await pool.query(
-      'INSERT INTO agenda (dia, mes, nome, local, endereco, status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-      [dia, mes, nome, local, endereco || '', status]
+      'INSERT INTO agenda (dia, mes, nome, local, endereco, horario, status) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+      [dia, mes, nome, local, endereco || '', horario || '', status]
     );
     res.json(result.rows[0]);
   } catch (err) {
@@ -202,10 +202,10 @@ app.post('/.netlify/functions/api/agenda', async (req, res) => {
 
 app.put('/.netlify/functions/api/agenda/:id', async (req, res) => {
   try {
-    const { dia, mes, nome, local, endereco, status } = req.body;
+    const { dia, mes, nome, local, endereco, horario, status } = req.body;
     const result = await pool.query(
-      'UPDATE agenda SET dia=$1, mes=$2, nome=$3, local=$4, endereco=$5, status=$6 WHERE id=$7 RETURNING *',
-      [dia, mes, nome, local, endereco || '', status, req.params.id]
+      'UPDATE agenda SET dia=$1, mes=$2, nome=$3, local=$4, endereco=$5, horario=$6, status=$7 WHERE id=$8 RETURNING *',
+      [dia, mes, nome, local, endereco || '', horario || '', status, req.params.id]
     );
     res.json(result.rows[0]);
   } catch (err) {

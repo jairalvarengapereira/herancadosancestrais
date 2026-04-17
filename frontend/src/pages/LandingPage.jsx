@@ -339,6 +339,7 @@ function Agenda() {
               <div>
                 <p style={{fontFamily:"'Cinzel',serif",fontWeight:700,fontSize:15,color:C.offWhite,marginBottom:'.2rem'}}>{show.nome}</p>
                 <p style={{fontSize:13,color:C.bronze,letterSpacing:'.05em'}}>{show.local}</p>
+                {show.horario && <p style={{fontSize:12,color:C.bronze,marginTop:'.2rem'}}>🕐 {show.horario}</p>}
                 {show.endereco && <><span style={{fontSize:12,color:C.bronze,display:'block',marginTop:'.2rem'}}>📍 {show.endereco}</span><a href={'https://www.google.com/maps/search/' + encodeURIComponent(show.endereco)} target="_blank" rel="noopener noreferrer" style={{fontSize:11,color:C.dourado,textDecoration:'none'}}>Ver no GPS →</a></>}
               </div>
               <span style={{
