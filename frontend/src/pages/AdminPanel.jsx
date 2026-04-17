@@ -374,6 +374,7 @@ setEditing(null); setAdding(false); setForm({dia:'',mes:'',nome:'',local:'',ende
           <div style={{flex:1,borderLeft:'1px solid rgba(197,160,89,.2)',paddingLeft:'1rem'}}>
             <p style={{fontFamily:"'Cinzel',serif",color:C.offWhite,fontWeight:700,fontSize:13}}>{s.nome}</p>
             <p style={{fontSize:12,color:C.bronze}}>{s.local}</p>
+            {s.endereco && <a href={s.endereco} target="_blank" rel="noopener noreferrer" style={{fontSize:11,color:C.dourado,marginTop:'.2rem',textDecoration:'none'}}>📍 Ver no Maps</a>}
           </div>
           <span style={{fontSize:10,fontFamily:"'Cinzel',serif",letterSpacing:'.1em',textTransform:'uppercase',padding:'.25rem .6rem',borderRadius:2,
             ...(s.status==='confirmado'?{background:'rgba(11,48,34,.8)',color:'#4ade80',border:'1px solid rgba(74,222,128,.25)'}:{background:'rgba(197,160,89,.15)',color:C.dourado,border:'1px solid rgba(197,160,89,.35)'})
