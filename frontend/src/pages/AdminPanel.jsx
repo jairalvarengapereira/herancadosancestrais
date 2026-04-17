@@ -308,7 +308,7 @@ function TabVideos() {
 function TabAgenda() {
   const [shows, setShows] = useState([])
   const [editing, setEditing] = useState(null)
-  const [form, setForm] = useState({dia:'',mes:'',nome:'',local:'',status:'confirmado'})
+  const [form, setForm] = useState({dia:'',mes:'',nome:'',local:'',endereco:'',status:'confirmado'})
   const [adding, setAdding] = useState(false)
   const [msg, setMsg] = useState(null)
   const flash = (type,text) => { setMsg({type,text}); setTimeout(()=>setMsg(null),3000) }
@@ -323,7 +323,7 @@ function TabAgenda() {
       } else {
         const n = await createShow(form); setShows([...shows,n])
       }
-      setEditing(null); setAdding(false); setForm({dia:'',mes:'',nome:'',local:'',status:'confirmado'})
+setEditing(null); setAdding(false); setForm({dia:'',mes:'',nome:'',local:'',endereco:'',status:'confirmado'})
       flash('ok','✓ Show salvo!')
     } catch { flash('err','✗ Erro ao salvar.') }
   }
@@ -331,8 +331,8 @@ function TabAgenda() {
     if (!confirm('Remover show?')) return
     await deleteShow(id); setShows(shows.filter(s=>s.id!==id))
   }
-  const startEdit = s => { setEditing(s); setAdding(true); setForm({dia:s.dia,mes:s.mes,nome:s.nome,local:s.local,status:s.status}) }
-  const cancel = () => { setEditing(null); setAdding(false); setForm({dia:'',mes:'',nome:'',local:'',status:'confirmado'}) }
+  const startEdit = s => { setEditing(s); setAdding(true); setForm({dia:s.dia,mes:s.mes,nome:s.nome,local:s.local,endereco:s.endereco||'',status:s.status}) }
+  const cancel = () => { setEditing(null); setAdding(false); setForm({dia:'',mes:'',nome:'',local:'',endereco:'',status:'confirmado'}) }
 
   return (
     <div>
@@ -350,6 +350,7 @@ function TabAgenda() {
           </div>
           <Label>Nome do Evento</Label><Input value={form.nome} onChange={set('nome')} placeholder="Festival de Samba…" />
           <Label>Local e Cidade</Label><Input value={form.local} onChange={set('local')} placeholder="Nome do local · Cidade, MG" />
+          <Label>Endereço Google Maps (URL)</Label><Input value={form.endereco} onChange={set('endereco')} placeholder="https://maps.google.com/..." />
           <Label>Status</Label>
           <select value={form.status} onChange={set('status')} style={{width:'100%',background:'rgba(11,48,34,.7)',border:'1px solid rgba(197,160,89,.25)',borderRadius:3,color:C.offWhite,fontFamily:"'Lora',serif",fontSize:14,padding:'.65rem .9rem',outline:'none',marginBottom:'1rem',appearance:'none'}}>
             <option value="confirmado">Confirmado</option>
