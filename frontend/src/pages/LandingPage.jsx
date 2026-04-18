@@ -361,7 +361,7 @@ function Agenda() {
    CONTATO
 ══════════════════════════════════════════════════════════════ */
 function Contato() {
-  const [form, setForm] = useState({ nome:'',email:'',assunto:'',mensagem:'' })
+  const [form, setForm] = useState({ nome:'',telefone:'',assunto:'',mensagem:'' })
   const [msg, setMsg] = useState(null)
   const f = useFadeUp()
 
@@ -378,9 +378,11 @@ function Contato() {
   })
 
   const submit = () => {
-    if (!form.nome||!form.email||!form.assunto||!form.mensagem) { setMsg({type:'err',text:'⚠ Preencha todos os campos.'}); return }
-    setMsg({type:'ok',text:'✓ Mensagem enviada! Entraremos em contato.'})
-    setForm({nome:'',email:'',assunto:'',mensagem:''})
+    if (!form.nome||!form.telefone||!form.assunto||!form.mensagem) { setMsg({type:'err',text:'⚠ Preencha todos os campos.'}); return }
+    const msg = `Olá! Me chamo ${form.nome}.%0A%0ATelefone: ${form.telefone}%0AAssunto: ${form.assunto === 'show' ? 'Contratação de Show' : form.assunto === 'elogio' ? 'Elogio' : form.assunto === 'reclamacao' ? 'Reclamação' : 'Outro'}%0A%0AMensagem:%0A${form.mensagem}`
+    window.open(`https://wa.me/5531971160290?text=${msg}`, '_blank')
+    setMsg({type:'ok',text:'✓ Redirecionando para o WhatsApp!'})
+    setForm({nome:'',telefone:'',assunto:'',mensagem:''})
   }
 
   return (
@@ -394,8 +396,8 @@ function Contato() {
               <input type="text" placeholder="Seu nome completo" {...input('nome')} />
             </div>
             <div>
-              <label style={{display:'block',fontFamily:"'Cinzel',serif",fontSize:11,letterSpacing:'.15em',textTransform:'uppercase',color:C.dourado,marginBottom:'.4rem',opacity:.8}}>E-mail</label>
-              <input type="email" placeholder="seu@email.com" {...input('email')} />
+              <label style={{display:'block',fontFamily:"'Cinzel',serif",fontSize:11,letterSpacing:'.15em',textTransform:'uppercase',color:C.dourado,marginBottom:'.4rem',opacity:.8}}>Telefone</label>
+              <input type="tel" placeholder="(31) 99999-9999" {...input('telefone')} />
             </div>
           </div>
           <div style={{marginBottom:'1.25rem'}}>
