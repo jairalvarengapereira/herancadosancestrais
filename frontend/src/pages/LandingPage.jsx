@@ -170,10 +170,10 @@ function Sobre() {
             <div style={{
               width:'100%', aspectRatio:'3/2',
               background:'linear-gradient(135deg,#0e3d2b 0%,#071e12 100%)',
-              borderRadius:4, display:'flex', alignItems:'center', justifyContent:'center',
+              borderRadius:12, display:'flex', alignItems:'center', justifyContent:'center',
               border:'1px solid rgba(197,160,89,.2)', overflow:'hidden'
             }}>
-              <img src="/Capa.png" alt="Capa" style={{width:'100%', height:'100%', objectFit:'contain'}} />
+              <img src="/Capa.png" alt="Capa" style={{width:'100%', height:'100%', objectFit:'cover', borderRadius:8}} />
             </div>
           </div>
 
