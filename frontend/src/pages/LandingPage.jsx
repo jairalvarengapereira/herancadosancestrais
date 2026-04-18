@@ -479,6 +479,7 @@ function SocialFooter() {
         </div>
       </Secao>
       <footer style={{background:'rgba(7,32,21,.3)',borderTop:'1px solid rgba(197,160,89,.15)',padding:'2rem 1.5rem',textAlign:'center',fontSize:12,color:'rgba(197,160,89,.45)',letterSpacing:'.08em',fontFamily:"'Cinzel',serif"}}>
+        <a href="/README.html" target="_blank" style={{color:'rgba(197,160,89,.6)',textDecoration:'none',display:'block',marginBottom:'.5rem'}}>📖 Ver Manual do Site</a>
         © 2026 Jair Alvarenga Pereira. Todos os direitos reservados.
       </footer>
     </>
