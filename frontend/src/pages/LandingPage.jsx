@@ -383,8 +383,8 @@ function Contato() {
   const submit = () => {
     if (!form.nome||!form.telefone||!form.assunto||!form.mensagem) { setMsg({type:'err',text:'⚠ Preencha todos os campos.'}); return }
     const msg = `Olá! Me chamo ${form.nome}.%0A%0ATelefone: ${form.telefone}%0AAssunto: ${form.assunto === 'show' ? 'Contratação de Show' : form.assunto === 'elogio' ? 'Elogio' : form.assunto === 'reclamacao' ? 'Reclamação' : 'Outro'}%0A%0AMensagem:%0A${form.mensagem}`
-    const whatsAppNum = data?.whatsapp?.replace(/\D/g,'') || '5531971160290'
-    window.open(`https://wa.me/55${whatsAppNum}?text=${msg}`, '_blank')
+    const whatsAppNum = data?.whatsapp || '31971160290'
+    window.open(`https://wa.me/55${whatsAppNum.replace(/\D/g,'')}?text=${msg}`, '_blank')
     setMsg({type:'ok',text:'✓ Redirecionando para o WhatsApp!'})
     setForm({nome:'',telefone:'',assunto:'',mensagem:''})
   }

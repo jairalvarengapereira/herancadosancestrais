@@ -408,7 +408,14 @@ function TabContatos() {
   return (
     <div>
       <h3 style={{fontFamily:"'Cinzel',serif",color:C.dourado,marginBottom:'1.5rem',fontSize:15,letterSpacing:'.1em'}}>Redes Sociais e Contato</h3>
-      <Label>Número do WhatsApp (apenas dígitos, com DDD e DDI)</Label><Input value={d.whatsapp} onChange={set('whatsapp')} placeholder="5531999999999" />
+      <Label>Número do WhatsApp (com DDD)</Label>
+      <input 
+        type="tel" 
+        value={d.whatsapp} 
+        onChange={e => setD({...d, whatsapp: e.target.value.replace(/\D/g,'')})} 
+        placeholder="31999999999" 
+        style={{width:'100%', background:'rgba(11,48,34,.7)', border:'1px solid rgba(197,160,89,.25)', borderRadius:3, color:C.offWhite, fontFamily:"'Lora',serif", fontSize:15, padding:'.8rem 1rem', outline:'none'}}
+      />
       <Label>Link do Instagram</Label><Input value={d.instagram} onChange={set('instagram')} placeholder="https://instagram.com/…" />
       <Label>Link do Facebook</Label><Input value={d.facebook} onChange={set('facebook')} placeholder="https://facebook.com/…" />
       <Label>Link do YouTube</Label><Input value={d.youtube} onChange={set('youtube')} placeholder="https://youtube.com/…" />
