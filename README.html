@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Herança dos Ancestrais – Site Oficial</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: 'Georgia', serif; 
+      background: linear-gradient(135deg, #0B3022 0%, #071e12 100%);
+      color: #F4F1EA;
+      line-height: 1.8;
+      padding: 40px 20px;
+    }
+    .container { max-width: 800px; margin: 0 auto; }
+    h1 { 
+      font-family: 'Cinzel', serif;
+      color: #C5A059;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    h2 {
+      font-family: 'Cinzel', serif;
+      color: #C5A059;
+      font-size: 1.5rem;
+      margin: 40px 0 20px;
+      border-bottom: 1px solid rgba(197,160,89,0.3);
+      padding-bottom: 10px;
+    }
+    h3 {
+      font-family: 'Cinzel', serif;
+      color: #C5A059;
+      font-size: 1.2rem;
+      margin: 30px 0 15px;
+    }
+    p { margin-bottom: 15px; }
+    ul, ol { margin-left: 30px; margin-bottom: 20px; }
+    li { margin-bottom: 8px; }
+    .logo {
+      display: block;
+      max-width: 200px;
+      margin: 0 auto 40px;
+    }
+    .dourado { color: #C5A059; font-weight: bold; }
+    .destaque {
+      background: rgba(197,160,89,0.1);
+      border: 1px solid rgba(197,160,89,0.3);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    th, td {
+      border: 1px solid rgba(197,160,89,0.3);
+      padding: 12px;
+      text-align: left;
+    }
+    th { background: rgba(197,160,89,0.2); }
+    code {
+      background: rgba(0,0,0,0.3);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid rgba(197,160,89,0.3);
+      margin: 40px 0;
+    }
+    .footer {
+      text-align: center;
+      color: rgba(197,160,89,0.6);
+      margin-top: 60px;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <img src="https://herancadosancestrais.netlify.app/Logo2_1.png" alt="Logo Herança dos Ancestrais" class="logo">
+    
+    <h1>Herança dos Ancestrais – Site Oficial</h1>
+    
+    <p style="text-align: center; font-size: 1.1rem;">
+      Landing page + painel de administração para o Grupo Herança dos Ancestrais<br>
+      (Samba de Raiz – Belo Horizonte/MG)
+    </p>
+
+    <hr>
+
+    <h2>Passo a Passo para Utilização</h2>
+
+    <h3>1. Acessar o Site</h3>
+    <div class="destaque">
+      <p class="dourado" style="font-size: 1.3rem;">https://herancadosancestrais.netlify.app</p>
+      <p>O site é responsivo e funciona em computadores e celulares.</p>
+    </div>
+
+    <h3>2. Navegar pelo Site</h3>
+    <p>O site possui as seguintes seções:</p>
+    <ul>
+      <li><strong class="dourado">Nossa História</strong> – Apresentação do grupo</li>
+      <li><strong class="dourado">Músicos</strong> – Fotos e nomes dos integrantes</li>
+      <li><strong class="dourado">Galeria</strong> – Fotos de eventos</li>
+      <li><strong class="dourado">Vídeos</strong> – Vídeos do YouTube</li>
+      <li><strong class="dourado">Agenda</strong> – Próximos shows com local, endereço e horário</li>
+      <li><strong class="dourado">Contato</strong> – Formulário para mensagens via WhatsApp</li>
+    </ul>
+
+    <h3>3. Adicionar aos Favoritos (Mobile)</h3>
+    <p>Para adicionar o atalho na tela inicial do celular:</p>
+    
+    <p><strong class="dourado">No Android (Chrome):</strong></p>
+    <ol>
+      <li>Acesse o site</li>
+      <li>Toque no menu (⋮)</li>
+      <li>Toque em "Adicionar à tela inicial"</li>
+    </ol>
+    
+    <p><strong class="dourado">No iOS (Safari):</strong></p>
+    <ol>
+      <li>Acesse o site</li>
+      <li>Toque no botão Compartilhar (□↗)</li>
+      <li>Toque em "Adicionar à tela inicial"</li>
+    </ol>
+
+    <h3>4. Painel Administrativo</h3>
+    <p>Para gerenciar o conteúdo do site:</p>
+    <ol>
+      <li>Acesse o site</li>
+      <li>Clique no botão <strong class="dourado">⚙</strong> (canto inferior direito)</li>
+      <li>Digite a senha: <strong class="dourado">samba2026</strong></li>
+    </ol>
+
+    <p><strong class="dourado">Abas disponíveis:</strong></p>
+    <table>
+      <tr>
+        <th>Aba</th>
+        <th>O que você pode fazer</th>
+      </tr>
+      <tr>
+        <td><strong class="dourado">História</strong></td>
+        <td>Editar título, textos e números (anos, shows, músicos)</td>
+      </tr>
+      <tr>
+        <td><strong class="dourado">Músicos</strong></td>
+        <td>Adicionar/editar/remover músicos (nome, instrumento, bio, foto)</td>
+      </tr>
+      <tr>
+        <td><strong class="dourado">Fotos</strong></td>
+        <td>Fazer upload de fotos para a galeria</td>
+      </tr>
+      <tr>
+        <td><strong class="dourado">Vídeos</strong></td>
+        <td>Adicionar links do YouTube</td>
+      </tr>
+      <tr>
+        <td><strong class="dourado">Agenda</strong></td>
+        <td>Adicionar shows (dia, mês, nome, local, endereço, horário)</td>
+      </tr>
+      <tr>
+        <td><strong class="dourado">Redes</strong></td>
+        <td>Atualizar WhatsApp, Instagram, Facebook, YouTube</td>
+      </tr>
+    </table>
+
+    <h3>5. Receber Mensagens via WhatsApp</h3>
+    <p>Quando um visitante preenche o formulário de contato:</p>
+    <ol>
+      <li>Clica em "Enviar Mensagem"</li>
+      <li>É redirecionado para o WhatsApp do grupo</li>
+      <li>A mensagem já vem pré-preenchida com nome, telefone, assunto e mensagem</li>
+    </ol>
+
+    <p><strong class="dourado">Para alterar o número do WhatsApp:</strong></p>
+    <ol>
+      <li>Entre no painel admin (⚙)</li>
+      <li>Vá na aba <strong class="dourado">Redes</strong></li>
+      <li>Altere o campo WhatsApp (apenas números com DDD)</li>
+      <li>Clique em "Salvar Alterações"</li>
+    </ol>
+
+    <hr>
+
+    <p class="footer">© 2026 Jair Alvarenga Pereira. Todos os direitos reservados.</p>
+  </div>
+</body>
+</html>
