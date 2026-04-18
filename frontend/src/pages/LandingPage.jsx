@@ -401,7 +401,6 @@ function Contato() {
             </div>
             <div>
               <label style={{display:'block',fontFamily:"'Cinzel',serif",fontSize:11,letterSpacing:'.15em',textTransform:'uppercase',color:C.dourado,marginBottom:'.4rem',opacity:.8}}>Telefone</label>
-              <Label>Telefone</Label>
               <input 
                 type="tel" 
                 placeholder="(31) 99999-9999" 
