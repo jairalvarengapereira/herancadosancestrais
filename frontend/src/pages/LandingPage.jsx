@@ -382,7 +382,7 @@ function Contato() {
 
   const submit = () => {
     if (!form.nome||!form.telefone||!form.assunto||!form.mensagem) { setMsg({type:'err',text:'⚠ Preencha todos os campos.'}); return }
-    const msg = `Olá! Me chamo ${form.nome}.%0A%0ATelefone: ${form.telefone}%0AAssunto: ${form.assunto === 'show' ? 'Contratação de Show' : form.assunto === 'elogio' ? 'Elogio' : form.assunto === 'reclamacao' ? 'Reclamação' : 'Outro'}%0A%0AMensagem:%0A${form.mensagem}`
+    const msg = `Olá! Me chamo ${form.nome}.%0A%0ATelefone: ${form.telefone.replace(/(\d{2})(\d{5})(\d{4})/,'($1) $2-$3')}%0AAssunto: ${form.assunto === 'show' ? 'Contratação de Show' : form.assunto === 'elogio' ? 'Elogio' : form.assunto === 'reclamacao' ? 'Reclamação' : 'Outro'}%0A%0AMensagem:%0A${form.mensagem}`
     const whatsAppNum = data?.whatsapp || '31971160290'
     window.open(`https://wa.me/55${whatsAppNum.replace(/\D/g,'')}?text=${msg}`, '_blank')
     setMsg({type:'ok',text:'✓ Redirecionando para o WhatsApp!'})
@@ -401,7 +401,20 @@ function Contato() {
             </div>
             <div>
               <label style={{display:'block',fontFamily:"'Cinzel',serif",fontSize:11,letterSpacing:'.15em',textTransform:'uppercase',color:C.dourado,marginBottom:'.4rem',opacity:.8}}>Telefone</label>
-              <input type="tel" placeholder="(31) 99999-9999" {...input('telefone')} />
+              <Label>Telefone</Label>
+              <input 
+                type="tel" 
+                placeholder="(31) 99999-9999" 
+                value={form.telefone}
+                onChange={e => setForm({...form, telefone: e.target.value.replace(/\D/g,'').slice(0,11)})}
+                style={{
+                  width:'100%', background:'rgba(11,48,34,.7)', border:'1px solid rgba(197,160,89,.25)',
+                  borderRadius:3, color:C.offWhite, fontFamily:"'Lora',serif", fontSize:15, padding:'.8rem 1rem',
+                  outline:'none', transition:'border-color .2s'
+                }}
+                onFocus={e=>e.target.style.borderColor='rgba(197,160,89,.6)'}
+                onBlur={e=>e.target.style.borderColor='rgba(197,160,89,.25)'}
+              />
             </div>
           </div>
           <div style={{marginBottom:'1.25rem'}}>
