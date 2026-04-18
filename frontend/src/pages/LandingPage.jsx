@@ -382,7 +382,7 @@ function Contato() {
 
   const submit = () => {
     if (!form.nome||!form.telefone||!form.assunto||!form.mensagem) { setMsg({type:'err',text:'⚠ Preencha todos os campos.'}); return }
-    const msg = `Olá! Me chamo ${form.nome}.%0A%0ATelefone: ${form.telefone.replace(/(\d{2})(\d{5})(\d{4})/,'($1) $2-$3')}%0AAssunto: ${form.assunto === 'show' ? 'Contratação de Show' : form.assunto === 'elogio' ? 'Elogio' : form.assunto === 'reclamacao' ? 'Reclamação' : 'Outro'}%0A%0AMensagem:%0A${form.mensagem}`
+    const msg = `Olá! Me chamo ${form.nome}.%0A%0ATelefone: ${form.telefone}%0AAssunto: ${form.assunto === 'show' ? 'Contratação de Show' : form.assunto === 'elogio' ? 'Elogio' : form.assunto === 'reclamacao' ? 'Reclamação' : 'Outro'}%0A%0AMensagem:%0A${form.mensagem}`
     const whatsAppNum = data?.whatsapp || '31971160290'
     window.open(`https://wa.me/55${whatsAppNum.replace(/\D/g,'')}?text=${msg}`, '_blank')
     setMsg({type:'ok',text:'✓ Redirecionando para o WhatsApp!'})
@@ -405,7 +405,12 @@ function Contato() {
                 type="tel" 
                 placeholder="(31) 99999-9999" 
                 value={form.telefone}
-                onChange={e => setForm({...form, telefone: e.target.value.replace(/\D/g,'').slice(0,11)})}
+                onChange={e => {
+                  let v = e.target.value.replace(/\D/g,'').slice(0,11)
+                  if (v.length > 7) v = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`
+                  else if (v.length > 2) v = `(${v.slice(0,2)}) ${v.slice(2)}`
+                  setForm({...form, telefone: v})
+                }}
                 style={{
                   width:'100%', background:'rgba(11,48,34,.7)', border:'1px solid rgba(197,160,89,.25)',
                   borderRadius:3, color:C.offWhite, fontFamily:"'Lora',serif", fontSize:15, padding:'.8rem 1rem',
