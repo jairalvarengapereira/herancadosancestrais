@@ -446,6 +446,7 @@ function SocialFooter() {
           <p style={{fontFamily:"'Cinzel',serif",fontSize:11,letterSpacing:'.22em',textTransform:'uppercase',color:C.bronze,marginBottom:'.5rem'}}>Redes Sociais</p>
           <h2 style={{fontFamily:"'Cinzel',serif",fontWeight:700,color:C.dourado,letterSpacing:'.08em',textTransform:'uppercase',fontSize:'1.4rem',marginBottom:'2rem'}}>Siga o grupo</h2>
           <div style={{display:'flex',gap:'1.5rem',justifyContent:'center',flexWrap:'wrap'}}>
+            <SocialLink href="https://wa.me/5531971160290" label="WhatsApp" icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width={18}><path d="M17.5 12c0-3.04-2.46-5.5-5.5-5.5S6.5 8.96 6.5 12s2.46 5.5 5.5 5.5c.76 0 1.47-.16 2.1-.43l1.86.5a8.45 8.45 0 0 0 1.54-.5 5.5 5.5 0 0 0 0-10zm-5.5 4c-2.48 0-4.5-2.02-4.5-4.5s2.02-4.5 4.5-4.5 4.5 2.02 4.5 4.5-2.02 4.5-4.5 4.5z"/></svg>} />
             {data && <>
               <SocialLink href={data.instagram} label="Instagram" icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width={18}><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>} />
               <SocialLink href={data.facebook} label="Facebook" icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width={18}><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>} />
