@@ -324,7 +324,7 @@ function Agenda() {
         <SectionHeader sub="Próximos Shows" title="Agenda 2026" />
         <div {...f} style={{...f.style,display:'flex',flexDirection:'column',gap:'1rem',maxWidth:780,margin:'0 auto'}}>
           {shows.map(show => (
-            <div key={show.id} style={{
+            <div key={show.id} className="agenda-card" style={{
               display:'grid', gridTemplateColumns:'80px 1fr auto', alignItems:'center', gap:'1.5rem',
               background:'rgba(197,160,89,.05)', border:'1px solid rgba(197,160,89,.18)',
               borderRadius:4, padding:'1.25rem 1.5rem', transition:'background .2s, border-color .2s'
@@ -353,6 +353,7 @@ function Agenda() {
           ))}
         </div>
       </div>
+      <style>{`@media(max-width:600px){.agenda-card{grid-template-columns:1fr!important;gap:.75rem!important;padding:1rem!important}.agenda-card>div:first-child{border-right:none!important;border-bottom:1px solid rgba(197,160,89,.2);padding-right:0!important;padding-bottom:.75rem!important}}`}</style>
     </Secao>
   )
 }
